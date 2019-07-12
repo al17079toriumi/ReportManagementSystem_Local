@@ -6,9 +6,11 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.io.UnsupportedEncodingException;
 
 public class GenerateReport {
 	public static String generateReport(String sourceFilePath,String kadaiNum,String claText) {
@@ -46,15 +48,15 @@ public class GenerateReport {
             p3.waitFor();
 
             InputStream is = p3.getInputStream();
-	        BufferedReader br = new BufferedReader(new InputStreamReader(is));
-	        String sourceLine;
+		        BufferedReader br = new BufferedReader(new InputStreamReader(is, "UTF-8"));
+		        String sourceLine;
             while ((sourceLine = br.readLine()) != null) {
             	 sourceText += sourceLine+"\n";
             }
             br.close();
 
             File logFile = new File("output.log");
-            BufferedReader br2 = new BufferedReader(new FileReader(logFile));
+            BufferedReader br2 = new BufferedReader(new InputStreamReader(new FileInputStream(logFile), "UTF-8"));
             String logLine="";
             List<String> logList = new ArrayList<String>();
             int count = -1;
@@ -63,6 +65,7 @@ public class GenerateReport {
             	count++;
             }
             logList.remove(count);
+            //logList.remove(count-1);
             logList.remove(0);
             for(int i=0;i<logList.size();i++) {
             	resultText += logList.get(i);
@@ -78,12 +81,13 @@ public class GenerateReport {
             return "Erroer by Application";
 		}
 
+
         reportText += "課題"+kadaiNum+"\n\n";
         reportText += "ソースコード\n";
         reportText += sourceText+"\n";
         reportText += "実行結果\n";
         reportText += resultText;
 
-        return reportText;
+ 				return reportText;
 	}
 }

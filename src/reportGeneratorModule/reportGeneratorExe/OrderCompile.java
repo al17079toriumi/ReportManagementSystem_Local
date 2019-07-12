@@ -34,7 +34,7 @@ public class OrderCompile {
             p2.waitFor();
 
             File logFile = new File("compile.log");
-            BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(logFile)));
+						BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(logFile), "UTF-8"));
             String logLine="";
             List<String> logList = new ArrayList<String>();
             int count = -1;
